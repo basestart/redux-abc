@@ -53,3 +53,21 @@ function loggerEnhencer (createStore) {
 		}
 	}
 }
+
+function travelLogger (createStore) {
+	return function (reducer, initState) {
+		let store = createStore(reducer, initState);
+		states = window.states || [];
+		states.push(store.getState());
+		function dispatch (action) {
+			const res = store.dispatch(action);
+			const newState = store.getState();
+			states.push(newState);
+			console.log(states)
+		}
+		return {
+			...store,
+			dispatch
+		}
+	}
+}
