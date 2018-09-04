@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>	redux-abc </title>
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+	<script src="./fakeRedux.js"></script>
+</head>
+<body>
+	<div>
+		<button id="add">+</button>
+		<button id="sub">-</button>
+		<div id="show"></div>
+	</div>
+<script>
+	var count = 0;
+	var add = $('#add');
+	var sub = $('#sub');
+	var show = $('#show');
+	// 统一action
+	var ADD = {type: 'ADD'};
+	var SUB = {type: 'SUB'};
+	// count根据action的不同动态映射新的count
+	function change (count, action) {
+		if(action.type === 'ADD') {
+			return ++ count
+		} else if(action.type === 'SUB') {
+			return -- count
+		} else {
+			return count
+		}
+	}
+
+	var store = createStore(change, count, loggerEnhencer);
+
+	add.click(() => {
+		store.dispatch(ADD);
+	})
+
+	sub.click(() => {
+		store.dispatch(SUB);
+	})
+
+	store.subscribe(render);
+
+	function render () {
+		let count = store.getState();
+		show.text(count);
+	}
+
+	render();
+
+</script>
+</body>
+</html>
